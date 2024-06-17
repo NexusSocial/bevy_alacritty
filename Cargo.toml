@@ -1,0 +1,29 @@
+[package]
+name = "bevy_alacritty"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+alacritty_terminal = "0.24"
+bytemuck = "1.16"
+flume = "0.11"
+mio-extras = "2"
+owned_ttf_parser = "0.19"
+
+[dependencies.bevy_vector_shapes]
+# version = "0.7.0"
+git = "https://github.com/marceline-cramer/bevy_vector_shapes"
+branch = "shape-origins"
+
+[dependencies.bevy]
+version = "0.13"
+default-features = false
+
+[dependencies.bevy_msdf]
+git = "https://github.com/marceline-cramer/bevy_msdf"
+branch = "main"
+
+[dev-dependencies.bevy]
+version = "0.13"
+features = ["dynamic_linking"]
