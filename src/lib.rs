@@ -52,7 +52,11 @@ impl Plugin for TerminalPlugin {
         app.add_plugins(MaterialPlugin::<BgMaterial>::default())
             .add_systems(
                 PreUpdate,
-                (process_events, render, remove_children.after(render)),
+                (
+                    process_events,
+                    render.after(process_events),
+                    remove_children.after(render),
+                ),
             );
 
         embedded_asset!(app, "bg.wgsl");
