@@ -17,6 +17,7 @@ use alacritty_terminal::{
     Term,
 };
 use bevy::{
+    asset::embedded_asset,
     input::keyboard::Key,
     prelude::*,
     render::{
@@ -53,6 +54,8 @@ impl Plugin for TerminalPlugin {
                 PreUpdate,
                 (process_events, render, remove_children.after(render)),
             );
+
+        embedded_asset!(app, "bg.wgsl");
     }
 }
 
@@ -762,7 +765,7 @@ struct BgMaterial {
 
 impl Material for BgMaterial {
     fn fragment_shader() -> ShaderRef {
-        "shaders/bg.wgsl".into()
+        "embedded://bevy_alacritty/bg.wgsl".into()
     }
 
     fn alpha_mode(&self) -> AlphaMode {
