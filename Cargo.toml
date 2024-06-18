@@ -2,7 +2,7 @@
 name = "bevy_alacritty"
 version = "0.1.0"
 edition = "2021"
-license = "MIT OR (Apache-2.0 WITH LLVM-exception)"
+license = "MIT-0 OR (Apache-2.0 WITH LLVM-exception)"
 
 [dependencies]
 alacritty_terminal = "0.24"
