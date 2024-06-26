@@ -443,7 +443,7 @@ impl TerminalMetrics {
     }
 }
 
-#[derive(Component)]
+#[derive(Component, TypePath)]
 pub struct Terminal {
     /// The fonts to render this terminal with.
     fonts: FontSet<Handle<MsdfAtlas>>,
