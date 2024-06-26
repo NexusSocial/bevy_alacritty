@@ -398,6 +398,7 @@ fn render(
 }
 
 /// The geometry of a terminal's space.
+#[derive(Clone, Debug, Reflect)]
 pub struct TerminalSpace {
     /// The total size of the terminal.
     pub size: Vec2,
