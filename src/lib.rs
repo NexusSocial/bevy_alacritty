@@ -32,6 +32,8 @@ use bevy_vector_shapes::{
 use flume::{Receiver, Sender};
 use owned_ttf_parser::{AsFaceRef, GlyphId};
 
+pub use bevy_msdf;
+
 pub struct TerminalPlugin;
 
 impl Plugin for TerminalPlugin {
