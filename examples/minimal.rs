@@ -22,16 +22,7 @@ fn setup(mut commands: Commands, assets: ResMut<AssetServer>) {
 
     // terminal
     commands.spawn((
-        Terminal::new(
-            fonts,
-            TerminalSpace {
-                size: Vec2::new(1.2, 0.8),
-                units_per_em: 0.015,
-                corner_radii: Vec4::splat(0.01),
-                padding: Vec2::splat(0.02),
-                opacity: 0.9,
-            },
-        ),
+        Terminal::new(TerminalConfig { fonts, ..default() }),
         TransformBundle::default(),
         VisibilityBundle::default(),
     ));

@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use alacritty_terminal::{
     event::{Event as ChildEvent, EventListener, WindowSize},
@@ -416,6 +416,18 @@ pub struct TerminalSpace {
     pub opacity: f32,
 }
 
+impl Default for TerminalSpace {
+    fn default() -> Self {
+        Self {
+            size: Vec2::new(1.2, 0.8),
+            units_per_em: 0.015,
+            corner_radii: Vec4::splat(0.01),
+            padding: Vec2::splat(0.02),
+            opacity: 0.9,
+        }
+    }
+}
+
 /// The metrics of various terminal geometry. Dependent on font.
 #[derive(Clone)]
 struct TerminalMetrics {
@@ -442,6 +454,37 @@ impl TerminalMetrics {
             baselines,
         }
     }
+}
+
+/// The configuration to initialize a terminal with.
+#[derive(Clone, Debug, Default, Reflect)]
+pub struct TerminalConfig {
+    /// The terminal's initial space.
+    pub space: TerminalSpace,
+
+    /// The terminal's [FontSet].
+    pub fonts: FontSet<Handle<MsdfAtlas>>,
+
+    /// Shell options.
+    ///
+    /// [`None`] will use the default shell.
+    pub shell: Option<Shell>,
+
+    /// The working directory of this terminal's child process.
+    pub working_directory: Option<PathBuf>,
+
+    /// Extra environment variables.
+    pub env: HashMap<String, String>,
+}
+
+/// Shell options.
+#[derive(Clone, Debug, Default, Reflect)]
+pub struct Shell {
+    /// Path to a shell program to run on startup.
+    pub program: String,
+
+    /// Arguments passed to shell.
+    pub args: Vec<String>,
 }
 
 #[derive(Component, TypePath)]
@@ -478,9 +521,8 @@ pub struct Terminal {
 }
 
 impl Terminal {
-    /// Creates a new terminal. If a command to run is not supplied, the
-    /// platform-dependent user shell is started instead.
-    pub fn new(fonts: FontSet<Handle<MsdfAtlas>>, space: TerminalSpace) -> Self {
+    /// Creates a new terminal.
+    pub fn new(config: TerminalConfig) -> Self {
         // default the grid size to 80x40 until font metrics can be obtained
         let grid_size = UVec2::new(80, 40);
 
@@ -489,24 +531,26 @@ impl Terminal {
         let listener = Listener { sender };
 
         // configure terminal
-        let config = Config::default();
+        let term_config = Config::default();
 
         // pass the size of the terminal grid
         let term_size = TermSize::new(grid_size.x as usize, grid_size.y as usize);
 
         // create the terminal helper
         let term = Arc::new(FairMutex::new(Term::new(
-            config,
+            term_config,
             &term_size,
             listener.clone(),
         )));
 
         // configure child
         let options = Options {
-            shell: None,             // TODO configure this
-            working_directory: None, // TODO configure this
-            hold: false,             // don't hang upon child death
-            env: default(),          // TODO configure this
+            hold: false, // don't hang upon child death
+            shell: config.shell.as_ref().map(|shell| {
+                alacritty_terminal::tty::Shell::new(shell.program.clone(), shell.args.clone())
+            }),
+            working_directory: config.working_directory,
+            env: config.env,
         };
 
         // define initial child PTY size; ignoring floating point units
@@ -555,10 +599,10 @@ impl Terminal {
         }
 
         Self {
-            fonts,
+            fonts: config.fonts,
             metrics: None,
             colors,
-            space,
+            space: config.space,
             term,
             event_tx,
             event_rx,
@@ -647,7 +691,7 @@ impl FontStyle {
 
 /// Generic container for all font faces used in a terminal. Eases
 /// the writing of code manipulating all faces at once.
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, Reflect)]
 pub struct FontSet<T> {
     pub regular: T,
     pub italic: T,
