@@ -125,9 +125,14 @@ fn render(
     atlases: Res<Assets<MsdfAtlas>>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<BgMaterial>>,
-    mut query: Query<(Entity, &mut Terminal, &GlobalTransform)>,
+    mut query: Query<(
+        Entity,
+        &mut Terminal,
+        &GlobalTransform,
+        Option<&InheritedVisibility>,
+    )>,
 ) {
-    for (e, mut terminal, transform) in query.iter_mut() {
+    for (e, mut terminal, transform, visibility) in query.iter_mut() {
         // retrieve handles to the terminal's atlases
         let try_atlases = terminal.fonts.as_ref().map(|font| atlases.get(font));
 
@@ -179,6 +184,13 @@ fn render(
         // process deferred terminal resize
         if let Some(resize) = resize {
             term.resize(resize);
+        }
+
+        // after resizing if necessary, if this terminal is hidden, hide all
+        // children and abort rendering
+        if visibility.copied() == Some(InheritedVisibility::HIDDEN) {
+            commands.entity(e).despawn_descendants();
+            continue;
         }
 
         // begin rendering the terminal's content
