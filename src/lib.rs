@@ -671,6 +671,11 @@ impl Terminal {
 
     /// Sends keyboard input to this terminal.
     pub fn send_input(&self, input: &str) {
+        // sending empty input does... something idk but the terminal freezes
+        if input.is_empty() {
+            return;
+        }
+
         let _ = self
             .event_tx
             .send(Msg::Input(input.as_bytes().to_vec().into()));
