@@ -14,7 +14,7 @@ owned_ttf_parser = "0.19"
 [dependencies.bevy_vector_shapes]
 # version = "0.7.0"
 git = "https://github.com/marceline-cramer/bevy_vector_shapes"
-branch = "shape-origins"
+rev = "bef91356bcf8e6280597faa3aa088a347c353ec9"
 
 [dependencies.bevy]
 version = "0.13"
