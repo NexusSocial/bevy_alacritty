@@ -21,8 +21,8 @@ version = "0.13"
 default-features = false
 
 [dependencies.bevy_msdf]
-git = "https://github.com/marceline-cramer/bevy_msdf"
-branch = "main"
+git = "https://github.com/NexusSocial/bevy_msdf"
+rev = "2a143abbda86c08dec30fe008561e7c7ef96a13f"
 
 [dev-dependencies.bevy]
 version = "0.13"

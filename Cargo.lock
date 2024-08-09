@@ -753,7 +753,7 @@ version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f06daa26ffb82d90ba772256c0ba286f6c305c392f6976c9822717974805837c"
 dependencies = [
- "glam 0.25.0",
+ "glam",
  "serde",
 ]
 
@@ -763,18 +763,19 @@ version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0d7ef7f2a826d0b19f059035831ce00a5e930435cc53c61e045773d0483f67a"
 dependencies = [
- "glam 0.25.0",
+ "glam",
 ]
 
 [[package]]
 name = "bevy_msdf"
 version = "0.1.0"
-source = "git+https://github.com/marceline-cramer/bevy_msdf?branch=main#c3a0c172797b7aed887e3c4bc8339f303325ceb3"
+source = "git+https://github.com/NexusSocial/bevy_msdf?rev=2a143abbda86c08dec30fe008561e7c7ef96a13f#2a143abbda86c08dec30fe008561e7c7ef96a13f"
 dependencies = [
  "bevy",
  "bytemuck",
- "font-mud",
+ "msdfgen",
  "owned_ttf_parser 0.19.0",
+ "rect_packer",
  "thiserror",
  "wgpu",
 ]
@@ -822,7 +823,7 @@ dependencies = [
  "bevy_utils",
  "downcast-rs",
  "erased-serde",
- "glam 0.25.0",
+ "glam",
  "serde",
  "smol_str",
  "thiserror",
@@ -1651,7 +1652,7 @@ checksum = "95ed933078d2e659745df651f4c180511cd582e5b9414ff896e7d50d207e3103"
 dependencies = [
  "const_panic",
  "encase_derive",
- "glam 0.25.0",
+ "glam",
  "thiserror",
 ]
 
@@ -1785,17 +1786,6 @@ name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
-
-[[package]]
-name = "font-mud"
-version = "0.1.0"
-source = "git+https://git.disroot.org/hearth/font-mud?rev=c1e6b66f45#c1e6b66f459e32ee90de2a1c29b8a2124a1a9bad"
-dependencies = [
- "glam 0.20.5",
- "msdfgen",
- "rect_packer",
- "ttf-parser 0.19.2",
-]
 
 [[package]]
 name = "foreign-types"
@@ -1938,12 +1928,6 @@ dependencies = [
  "log",
  "xml-rs",
 ]
-
-[[package]]
-name = "glam"
-version = "0.20.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f43e957e744be03f5801a55472f593d43fabdebf25a4585db250f04d86b1675f"
 
 [[package]]
 name = "glam"
@@ -2136,7 +2120,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f33ddb7f7143d9e703c072e88b98cd8b9719f174137a671429351bd2ee43c02a"
 dependencies = [
  "constgebra",
- "glam 0.25.0",
+ "glam",
 ]
 
 [[package]]
@@ -2534,8 +2518,8 @@ dependencies = [
 
 [[package]]
 name = "msdfgen"
-version = "0.2.2"
-source = "git+https://github.com/hearth-rs/msdfgen-rs?branch=fix-mac-builds#ac254fb7a3ffc9a8e4ca9acf7929b5128b8281e6"
+version = "0.2.1"
+source = "git+https://github.com/katyo/msdfgen-rs?rev=5e62bcf#5e62bcfd04a4b3f284f22601440c38fcc4a319f5"
 dependencies = [
  "bytemuck",
  "msdfgen-sys",
@@ -2546,7 +2530,7 @@ dependencies = [
 [[package]]
 name = "msdfgen-sys"
 version = "0.2.1"
-source = "git+https://github.com/hearth-rs/msdfgen-rs?branch=fix-mac-builds#ac254fb7a3ffc9a8e4ca9acf7929b5128b8281e6"
+source = "git+https://github.com/katyo/msdfgen-rs?rev=5e62bcf#5e62bcfd04a4b3f284f22601440c38fcc4a319f5"
 dependencies = [
  "cc",
 ]
