@@ -207,7 +207,7 @@ fn render(
 
         // draw background panel
         let bg_color = AnsiColor::Named(NamedColor::Background);
-        let bg_color = color_to_bevy(&colors, bg_color).with_a(terminal.space.opacity);
+        let bg_color = color_to_bevy(&colors, bg_color).with_alpha(terminal.space.opacity);
         painter.origin = Some(transform.transform_point(Vec3::Z * -0.1));
         painter.transform = transform.compute_transform();
         painter.corner_radii = terminal.space.corner_radii;
@@ -250,10 +250,10 @@ fn render(
             }
 
             // if background is not the transparent color, write to bg texture
-            if bg != bg_color.with_a(1.0) {
+            if cell.bg != AnsiColor::Named(NamedColor::Background) {
                 let bg_idx = (row as u32 + 1) * bg_extent.width + (col as u32 + 1);
                 let bg_cell = &mut bg_data[bg_idx as usize];
-                *bg_cell = bg.as_rgba_u32();
+                *bg_cell = bg.to_linear().as_u32();
             }
 
             // look up the correct font atlas and metrics for this cell's style
@@ -351,12 +351,12 @@ fn render(
         let mut new_children = vec![];
 
         let bg_handle = terminal.bg.get_or_insert_with(|| images.reserve_handle());
-        let bg = images.get_or_insert_with(bg_handle.clone(), || {
+        let bg = images.get_or_insert_with(bg_handle.id(), || {
             Image::new(
                 bg_extent,
                 TextureDimension::D2,
                 vec![0xff; bg_data_len],
-                TextureFormat::Rgba8UnormSrgb,
+                TextureFormat::Rgba8Unorm,
                 RenderAssetUsages::all(),
             )
         });
@@ -373,6 +373,7 @@ fn render(
                         mesh: meshes.add(
                             Rectangle::from_size(bg_size)
                                 .mesh()
+                                .build()
                                 .translated_by(Vec3::Z * 0.05),
                         ),
                         material: materials.add(BgMaterial {
@@ -939,5 +940,5 @@ pub fn color_to_rgb(colors: &Colors, color: AnsiColor) -> Rgb {
 /// Helper function to convert an Alacritty color to a Bevy color.
 pub fn color_to_bevy(colors: &Colors, color: AnsiColor) -> Color {
     let rgb = color_to_rgb(colors, color);
-    Color::rgb_u8(rgb.r, rgb.g, rgb.b)
+    Color::srgb_u8(rgb.r, rgb.g, rgb.b)
 }

@@ -40,7 +40,7 @@ fn input(
     query: Query<&Terminal>,
 ) {
     let Ok(terminal) = query.get_single() else {
-        exit.send(AppExit);
+        exit.send(AppExit::Success);
         return;
     };
 

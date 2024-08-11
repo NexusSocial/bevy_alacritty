@@ -6,24 +6,20 @@ license = "MIT-0 OR (Apache-2.0 WITH LLVM-exception)"
 
 [dependencies]
 alacritty_terminal = "0.24"
+bevy_vector_shapes = "0.8.0"
 bytemuck = "1.16"
 flume = "0.11"
 mio-extras = "2"
 owned_ttf_parser = "0.19"
 
-[dependencies.bevy_vector_shapes]
-# version = "0.7.0"
-git = "https://github.com/marceline-cramer/bevy_vector_shapes"
-rev = "bef91356bcf8e6280597faa3aa088a347c353ec9"
-
 [dependencies.bevy]
-version = "0.13"
+version = "0.14"
 default-features = false
 
 [dependencies.bevy_msdf]
 git = "https://github.com/NexusSocial/bevy_msdf"
-rev = "2a143abbda86c08dec30fe008561e7c7ef96a13f"
+rev = "45a1458ac528744f8836c3000fefc712d34e314e"
 
 [dev-dependencies.bevy]
-version = "0.13"
+version = "0.14"
 features = ["dynamic_linking"]
